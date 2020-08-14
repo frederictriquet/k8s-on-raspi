@@ -1,0 +1,21 @@
+---
+# ansible-playbook -i hosts.yml playbook.yml
+- hosts: master
+  become: yes
+  tasks:
+    - name: Generate bootstrap token
+      command: kubeadm token generate
+      register: kubeadm_output
+
+    - set_fact:
+        token: "{{ kubeadm_output.stdout }}"
+
+    - debug: msg="{{token}}"
+
+    - name: Init control Plane (kubeadm init), please wait
+      command: kubeadm init --token={{token}} --kubernetes-version=v1.18.5 --pod-network-cidr=10.244.0.0/16
+    
+# - hosts: slave
+#   become: yes
+#     tasks:
+  

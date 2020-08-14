@@ -1,0 +1,8 @@
+---
+# ansible-playbook -i hosts.yml playbook-poweroff.yml
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: shut down host
+      command: poweroff
+      become: yes

@@ -1,0 +1,13 @@
+---
+# ansible-playbook -i hosts.yml playbook.yml
+- hosts: all
+  become: yes
+  tasks:
+    - name: Remove packages
+      apt:
+        name: "{{ item }}"
+        state: absent
+        purge: yes
+      with_items:
+        - log2ram
+        - docker.io

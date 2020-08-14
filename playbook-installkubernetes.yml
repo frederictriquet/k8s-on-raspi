@@ -1,0 +1,29 @@
+---
+# ansible-playbook -i hosts.yml playbook.yml
+- hosts: all
+  become: yes
+  tasks:
+    - name: Add packages.cloud.google.com signing key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+    - name: Add Kubernetes repo
+      apt_repository:
+        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+
+    - name: Install "kubelet kubeadm kubectl" packages
+      apt:
+        name:
+        - kubelet
+        - kubeadm
+        - kubectl
+
+    - name: Disable (mark as held) updates for the Kubernetes packages
+      dpkg_selections:
+        name: "{{ item }}"
+        selection: hold
+      with_items:
+        - kubelet
+        - kubeadm
+        - kubectl
+  

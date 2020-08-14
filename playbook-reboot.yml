@@ -1,0 +1,9 @@
+---
+# ansible-playbook -i hosts.yml playbook-poweroff.yml
+- hosts: all
+  gather_facts: no
+  strategy: free
+  tasks:
+    - name: shut down host
+      reboot:
+      become: yes

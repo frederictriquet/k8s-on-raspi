@@ -1,0 +1,7 @@
+---
+# ansible-playbook -i hosts.yml playbook.yml
+#- import_playbook: playbook-installpubkeys.yml
+#- import_playbook: playbook-installlog2ram.yml
+#- import_playbook: playbook-installdocker.yml
+#- import_playbook: playbook-installkubernetes.yml
+- import_playbook: playbook-configkubernetes.yml

@@ -1,0 +1,39 @@
+---
+# ansible-playbook -i hosts.yml playbook.yml
+- hosts: all
+  become: yes
+  tasks:
+    - name: Add Azlux repo
+      apt_repository:
+        repo: deb http://packages.azlux.fr/debian/ buster main
+        state: present
+
+    - name: Add Azlux signing key
+      apt_key:
+        url: https://azlux.fr/repo.gpg.key
+        state: present
+
+    - name: Update package list
+      apt:
+        update_cache: yes
+
+    - name: Install "log2ram" package
+      apt:
+        name: log2ram
+
+    - name: Disable Log2ram Email feature
+      lineinfile:
+        path: /etc/log2ram.conf
+        regexp: '^MAIL='
+        line: MAIL=false
+
+    - name: Configure Log2ram log size
+      lineinfile:
+        path: /etc/log2ram.conf
+        regexp: '^SIZE='
+        line: SIZE=200M
+    
+    - name: Start log2ram service
+      service:
+        name: log2ram
+        state: started
